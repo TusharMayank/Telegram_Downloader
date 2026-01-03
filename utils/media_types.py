@@ -141,24 +141,28 @@ def check_media_type(message, selected_types: List[MediaType]) -> bool:
         return False
 
     for media_type in selected_types:
-        if media_type == MediaType.AUDIO and message.audio:
+        if media_type == MediaType.AUDIO and getattr(message, 'audio', None):
             return True
-        elif media_type == MediaType.VIDEO and message.video:
+        elif media_type == MediaType.VIDEO and getattr(message, 'video', None):
             return True
-        elif media_type == MediaType.PHOTO and message.photo:
+        elif media_type == MediaType.PHOTO and getattr(message, 'photo', None):
             return True
-        elif media_type == MediaType.DOCUMENT and message.document:
+        elif media_type == MediaType.DOCUMENT and getattr(message, 'document', None):
             # Exclude other specific types that are also documents
-            if not (message.audio or message.video or message.voice or
-                    message.video_note or message.sticker):
+            if not (getattr(message, 'audio', None) or
+                    getattr(message, 'video', None) or
+                    getattr(message, 'voice', None) or
+                    getattr(message, 'video_note', None) or
+                    getattr(message, 'sticker', None)):
                 return True
-        elif media_type == MediaType.VOICE and message.voice:
+        elif media_type == MediaType.VOICE and getattr(message, 'voice', None):
             return True
-        elif media_type == MediaType.VIDEO_NOTE and message.video_note:
+        elif media_type == MediaType.VIDEO_NOTE and getattr(message, 'video_note', None):
             return True
-        elif media_type == MediaType.ANIMATION and message.animation:
+        elif media_type == MediaType.ANIMATION and (
+                getattr(message, 'animation', None) or getattr(message, 'gif', None)):
             return True
-        elif media_type == MediaType.STICKER and message.sticker:
+        elif media_type == MediaType.STICKER and getattr(message, 'sticker', None):
             return True
 
     return False
@@ -175,13 +179,13 @@ def get_file_extension(message) -> str:
         File extension string
     """
     # Try to get from file name
-    if message.file and message.file.name:
+    if getattr(message, 'file', None) and getattr(message.file, 'name', None):
         name = message.file.name
         if '.' in name:
             return '.' + name.split('.')[-1].lower()
 
     # Try to get from mime type
-    if message.file and message.file.mime_type:
+    if getattr(message, 'file', None) and getattr(message.file, 'mime_type', None):
         mime = message.file.mime_type.lower()
 
         # Audio
@@ -223,19 +227,19 @@ def get_file_extension(message) -> str:
             return '.zip'
 
     # Default based on message type
-    if message.audio:
+    if getattr(message, 'audio', None):
         return '.mp3'
-    elif message.video:
+    elif getattr(message, 'video', None):
         return '.mp4'
-    elif message.photo:
+    elif getattr(message, 'photo', None):
         return '.jpg'
-    elif message.voice:
+    elif getattr(message, 'voice', None):
         return '.ogg'
-    elif message.video_note:
+    elif getattr(message, 'video_note', None):
         return '.mp4'
-    elif message.sticker:
+    elif getattr(message, 'sticker', None):
         return '.webp'
-    elif message.animation:
+    elif getattr(message, 'animation', None) or getattr(message, 'gif', None):
         return '.gif'
 
     return '.bin'
@@ -253,27 +257,27 @@ def generate_filename(message, post_id: int) -> str:
         Generated filename
     """
     # Try to use original filename
-    if message.file and message.file.name:
+    if getattr(message, 'file', None) and getattr(message.file, 'name', None):
         return message.file.name
 
     # Generate based on type
     ext = get_file_extension(message)
 
-    if message.audio:
+    if getattr(message, 'audio', None):
         prefix = "audio"
-    elif message.video:
+    elif getattr(message, 'video', None):
         prefix = "video"
-    elif message.photo:
+    elif getattr(message, 'photo', None):
         prefix = "photo"
-    elif message.voice:
+    elif getattr(message, 'voice', None):
         prefix = "voice"
-    elif message.video_note:
+    elif getattr(message, 'video_note', None):
         prefix = "video_note"
-    elif message.sticker:
+    elif getattr(message, 'sticker', None):
         prefix = "sticker"
-    elif message.animation:
+    elif getattr(message, 'animation', None) or getattr(message, 'gif', None):
         prefix = "animation"
-    elif message.document:
+    elif getattr(message, 'document', None):
         prefix = "document"
     else:
         prefix = "file"

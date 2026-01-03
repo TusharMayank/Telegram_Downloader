@@ -14,6 +14,14 @@ from .media_types import (
     get_file_extension,
     generate_filename
 )
+from .bot_helpers import (
+    BotInfo,
+    BotChatStats,
+    parse_bot_username,
+    parse_bot_link,
+    format_file_size,
+    format_duration
+)
 
 __all__ = [
     'parse_telegram_url',
@@ -29,5 +37,11 @@ __all__ = [
     'MEDIA_EXTENSIONS',
     'check_media_type',
     'get_file_extension',
-    'generate_filename'
+    'generate_filename',
+    'BotInfo',
+    'BotChatStats',
+    'parse_bot_username',
+    'parse_bot_link',
+    'format_file_size',
+    'format_duration'
 ]

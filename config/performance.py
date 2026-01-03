@@ -114,28 +114,27 @@ PERFORMANCE_PRESETS = {
         max_concurrent_downloads=3,
         enabled_parallel=True,
         download_chunk_size=512,
-        delay_between_files=0.5,
-        delay_between_batches=2.0,
+        delay_between_files=0.3,
+        delay_between_batches=1.0,
         batch_size=10
     ),
     'aggressive': PerformanceConfig(
         max_concurrent_downloads=5,
         enabled_parallel=True,
         download_chunk_size=1024,
-        delay_between_files=0.2,
-        delay_between_batches=1.0,
+        delay_between_files=0.1,
+        delay_between_batches=0.5,
         batch_size=20
     ),
     'maximum': PerformanceConfig(
         max_concurrent_downloads=8,
         enabled_parallel=True,
         download_chunk_size=2048,
-        delay_between_files=0.1,
-        delay_between_batches=0.5,
+        delay_between_files=0.05,
+        delay_between_batches=0.2,
         batch_size=50
     )
 }
-
 
 def get_preset(name: str) -> PerformanceConfig:
     """Get a preset configuration"""

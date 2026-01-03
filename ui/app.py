@@ -83,7 +83,16 @@ class TelegramAudioDownloaderApp:
         self.notebook.pack(fill=tk.BOTH, expand=True, padx=10, pady=5)
 
         # Create logger component (shared across tabs)
+        from ui.components.logger import LoggerComponent
         self.logger = LoggerComponent()
+
+        # Import all tab classes
+        from ui.tabs.download_tab import DownloadTab
+        from ui.tabs.batch_tab import BatchTab
+        from ui.tabs.bot_tab import BotTab
+        from ui.tabs.performance_tab import PerformanceTab
+        from ui.tabs.settings_tab import SettingsTab
+        from ui.tabs.about_tab import AboutTab
 
         # Create tabs
         self.download_tab = DownloadTab(
@@ -100,8 +109,12 @@ class TelegramAudioDownloaderApp:
             self
         )
 
-        # Import and create performance tab
-        from ui.tabs.performance_tab import PerformanceTab
+        self.bot_tab = BotTab(
+            self.notebook,
+            self.shared_vars,
+            self.logger,
+            self
+        )
 
         self.performance_tab = PerformanceTab(
             self.notebook,
@@ -118,9 +131,6 @@ class TelegramAudioDownloaderApp:
             self.config_manager
         )
 
-        # Import and create about tab
-        from ui.tabs.about_tab import AboutTab
-
         self.about_tab = AboutTab(
             self.notebook,
             self.shared_vars,
@@ -131,6 +141,7 @@ class TelegramAudioDownloaderApp:
         # Add tabs to notebook
         self.notebook.add(self.download_tab.frame, text="📥 Download")
         self.notebook.add(self.batch_tab.frame, text="📦 Batch Download")
+        self.notebook.add(self.bot_tab.frame, text="💬 Chat Downloads")
         self.notebook.add(self.performance_tab.frame, text="⚡ Performance")
         self.notebook.add(self.settings_tab.frame, text="⚙️ Settings")
         self.notebook.add(self.about_tab.frame, text="ℹ️ About")
