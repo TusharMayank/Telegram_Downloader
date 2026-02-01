@@ -176,6 +176,9 @@ class DownloadTab:
         )
         if directory:
             self.shared_vars['output_dir'].set(directory)
+            # Save the new directory to configuration immediately
+            self.app.config_manager.set('output_dir', directory)
+            self.app.config_manager.save(self.app.config_manager.config)
 
     def _open_downloads_folder(self) -> None:
         """Open downloads folder"""
